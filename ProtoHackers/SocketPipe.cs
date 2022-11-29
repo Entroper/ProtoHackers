@@ -80,6 +80,7 @@ public class SocketPipe : IDuplexPipe
 		}
 		finally
 		{
+			Console.WriteLine($"Connection closed to {_socket.RemoteEndPoint}");
 			_socket.Close();
 		}
 	}
