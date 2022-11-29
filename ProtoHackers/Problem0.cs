@@ -4,18 +4,13 @@ using System.Text;
 
 namespace ProtoHackers;
 
-public class Problem0
+public static class Problem0
 {
     const uint BufferSize = 4096;
 
-    public static async Task EchoServer(int port)
+    public static async Task EchoServer()
     {
-        var socket = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
-        socket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
-        socket.Bind(new IPEndPoint(IPAddress.IPv6Any, port));
-        socket.Listen();
-        Console.WriteLine($"Listening on {socket.LocalEndPoint}");
-
+        var socket = TcpServer.Listen();
         while (true)
         {
             var connection = await socket.AcceptAsync();
