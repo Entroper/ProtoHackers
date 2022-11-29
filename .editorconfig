@@ -5,3 +5,4 @@ trim_trailing_whitespace = true
 [*.cs]
 indent_style = tab
 csharp_style_namespace_declarations=file_scoped:suggestion
+dotnet_diagnostic.CS8425.severity=suggestion

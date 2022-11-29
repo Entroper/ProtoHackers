@@ -12,6 +12,9 @@ public class PrimeService : ITcpService
 
 	private readonly CancellationTokenSource _cts;
 
+	private static byte[] NewLine = Encoding.ASCII.GetBytes("\n");
+	private static byte[] MalformedRequestError = Encoding.ASCII.GetBytes("Error: malformed request\n");
+
 	private static readonly JsonSerializerOptions SerializationOptions = new JsonSerializerOptions
 	{
 		PropertyNameCaseInsensitive = true,
@@ -72,7 +75,7 @@ public class PrimeService : ITcpService
 		//Console.Write($"Request: {request?.Method} {request?.Number}");
 		if (request == null || request.Method != "isPrime" || !request.Number.HasValue)
 		{
-			await _pipe.Output.WriteAsync(Encoding.ASCII.GetBytes("Error: malformed request\n"));
+			await _pipe.Output.WriteAsync(MalformedRequestError);
 			await _pipe.Output.FlushAsync();
 			await _pipe.Output.CompleteAsync();
 
@@ -89,7 +92,7 @@ public class PrimeService : ITcpService
 
 			using var jsonWriter = new Utf8JsonWriter(_pipe.Output);
 			JsonSerializer.Serialize(jsonWriter, response, SerializationOptions);
-			await _pipe.Output.WriteAsync(Encoding.ASCII.GetBytes("\n"));
+			await _pipe.Output.WriteAsync(NewLine);
 			await _pipe.Output.FlushAsync();
 		}
 	}
