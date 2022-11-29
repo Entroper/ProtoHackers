@@ -1,20 +1,36 @@
-﻿using static ProtoHackers.Problem1;
-using System.Buffers;
-using System.IO.Pipelines;
+﻿using System.Buffers;
 using System.Net.Sockets;
 using System.Text.Json;
 using System.Text;
 
 namespace ProtoHackers;
 
-public class PrimeServer
+public class PrimeService : ITcpService
 {
 	private readonly Socket _socket;
 	private readonly SocketPipe _pipe;
 
 	private readonly CancellationTokenSource _cts;
 
-	public PrimeServer(Socket socket)
+	private static readonly JsonSerializerOptions SerializationOptions = new JsonSerializerOptions
+	{
+		PropertyNameCaseInsensitive = true,
+		PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+	};
+
+	private class Request
+	{
+		public string? Method { get; set; }
+		public decimal? Number { get; set; }
+	}
+
+	private class Response
+	{
+		public string? Method { get; set; }
+		public bool Prime { get; set; }
+	}
+
+	public PrimeService(Socket socket)
 	{
 		_socket = socket;
 		_pipe = new SocketPipe(socket);
