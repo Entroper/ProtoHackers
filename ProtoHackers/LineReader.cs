@@ -24,7 +24,6 @@ public class LineReader
 			}
 
 			var remaining = result.Buffer;
-			//DebugBuffer(result.Buffer);
 			var position = remaining.PositionOf((byte)'\n');
 			while (position.HasValue && !cancellationToken.IsCancellationRequested)
 			{

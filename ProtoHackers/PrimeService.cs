@@ -12,8 +12,8 @@ public class PrimeService : ITcpService
 
 	private readonly CancellationTokenSource _cts;
 
-	private static byte[] NewLine = Encoding.ASCII.GetBytes("\n");
-	private static byte[] MalformedRequestError = Encoding.ASCII.GetBytes("Error: malformed request\n");
+	private static readonly byte[] NewLine = Encoding.ASCII.GetBytes("\n");
+	private static readonly byte[] MalformedRequestError = Encoding.ASCII.GetBytes("Error: malformed request\n");
 
 	private static readonly JsonSerializerOptions SerializationOptions = new JsonSerializerOptions
 	{
@@ -79,8 +79,9 @@ public class PrimeService : ITcpService
 			await _pipe.Output.FlushAsync();
 			await _pipe.Output.CompleteAsync();
 
-			_pipe.Input.CancelPendingRead();
 			_cts.Cancel();
+			_pipe.Input.CancelPendingRead();
+			await _pipe.Input.CompleteAsync();
 		}
 		else
 		{
@@ -144,14 +145,5 @@ public class PrimeService : ITcpService
 		}
 
 		return true;
-	}
-
-	private static void DebugBuffer(ReadOnlySequence<byte> buffer)
-	{
-		Console.WriteLine("Debug buffer");
-		foreach (var segment in buffer)
-		{
-			Console.WriteLine($"Segment ({segment.Length} bytes) {Encoding.ASCII.GetString(segment.Span)}");
-		}
 	}
 }
