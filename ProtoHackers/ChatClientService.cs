@@ -8,8 +8,7 @@ namespace ProtoHackers;
 
 public class ChatClientService : ITcpService
 {
-	private readonly Socket _socket;
-	private readonly SocketPipe _pipe;
+	private SocketPipe _pipe;
 
 	private readonly CancellationTokenSource _cts;
 
@@ -23,11 +22,8 @@ public class ChatClientService : ITcpService
 
 	private static readonly Regex UsernameRegex = new Regex("^[A-Za-z0-9]+$", RegexOptions.Compiled);
 
-	public ChatClientService(Socket socket, ChatServer server)
+	public ChatClientService(ChatServer server)
 	{
-		_socket = socket;
-		_pipe = new SocketPipe(_socket);
-
 		_cts = new CancellationTokenSource();
 
 		_server = server;
@@ -35,9 +31,11 @@ public class ChatClientService : ITcpService
 		_username = "";
 	}
 
-	public async Task HandleConnection()
+	public async Task HandleConnection(Socket connection)
 	{
-		Console.WriteLine($"Connection accepted from {_socket.RemoteEndPoint}");
+		Console.WriteLine($"Connection accepted from {connection.RemoteEndPoint}");
+		_pipe = new SocketPipe(connection);
+
 		try
 		{
 			var input = _pipe.SocketToPipe();

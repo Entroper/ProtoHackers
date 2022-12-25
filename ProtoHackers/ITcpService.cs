@@ -4,5 +4,5 @@ namespace ProtoHackers;
 
 public interface ITcpService
 {
-	Task HandleConnection();
+	Task HandleConnection(Socket connection);
 }

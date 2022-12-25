@@ -2,33 +2,26 @@
 
 namespace ProtoHackers;
 
-public class EchoService
+public class EchoService : ITcpService
 {
 	const uint BufferSize = 4096;
 
-	private readonly Socket _socket;
-
-	public EchoService(Socket socket)
+	public async Task HandleConnection(Socket connection)
 	{
-		_socket = socket;
-	}
-
-	public async Task HandleConnection()
-	{
-		Console.WriteLine($"Connection accepted from {_socket.RemoteEndPoint}");
+		Console.WriteLine($"Connection accepted from {connection.RemoteEndPoint}");
 
 		var buffer = new byte[BufferSize];
 		int received;
 		do
 		{
-			received = await _socket.ReceiveAsync(buffer, SocketFlags.None);
+			received = await connection.ReceiveAsync(buffer, SocketFlags.None);
 			if (received > 0)
 			{
-				await _socket.SendAsync(new ArraySegment<byte>(buffer, 0, received), SocketFlags.None);
+				await connection.SendAsync(new ArraySegment<byte>(buffer, 0, received), SocketFlags.None);
 			}
 		} while (received > 0);
 
-		Console.WriteLine($"Connection closed to {_socket.RemoteEndPoint}");
-		_socket.Close();
+		Console.WriteLine($"Connection closed to {connection.RemoteEndPoint}");
+		connection.Close();
 	}
 }

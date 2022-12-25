@@ -26,7 +26,7 @@ public class ChatServer
 		while (true)
 		{
 			var connection = await socket.AcceptAsync();
-			_ = Task.Run(() => new ChatClientService(connection, this).HandleConnection());
+			_ = Task.Run(() => new ChatClientService(this).HandleConnection(connection));
 		}
 	}
 

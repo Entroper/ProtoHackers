@@ -7,8 +7,7 @@ namespace ProtoHackers;
 
 public class PrimeService : ITcpService
 {
-	private readonly Socket _socket;
-	private readonly SocketPipe _pipe;
+	private SocketPipe _pipe;
 
 	private readonly CancellationTokenSource _cts;
 
@@ -33,17 +32,16 @@ public class PrimeService : ITcpService
 		public bool Prime { get; set; }
 	}
 
-	public PrimeService(Socket socket)
+	public PrimeService()
 	{
-		_socket = socket;
-		_pipe = new SocketPipe(socket);
-
 		_cts = new CancellationTokenSource();
 	}
 
-	public async Task HandleConnection()
+	public async Task HandleConnection(Socket connection)
 	{
-		Console.WriteLine($"Connection accepted from {_socket.RemoteEndPoint}");
+		Console.WriteLine($"Connection accepted from {connection.RemoteEndPoint}");
+		_pipe = new SocketPipe(connection);
+
 		try
 		{
 			await Task.WhenAll(

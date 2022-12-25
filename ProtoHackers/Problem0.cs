@@ -8,7 +8,7 @@ public static class Problem0
 		while (true)
 		{
 			var connection = await socket.AcceptAsync();
-			_ = new EchoService(connection).HandleConnection();
+			_ = new EchoService().HandleConnection(connection);
 		}
 	}
 }

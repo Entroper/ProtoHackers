@@ -8,7 +8,7 @@ public class Problem2
 		while (true)
 		{
 			var connection = await socket.AcceptAsync();
-			_ = new PricingService(connection).HandleConnection();
+			_ = new PricingService().HandleConnection(connection);
 		}
 	}
 }

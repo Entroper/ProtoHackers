@@ -8,7 +8,7 @@ public static class Problem1
 		while (true)
 		{
 			var connection = await socket.AcceptAsync();
-			_ = new PrimeService(connection).HandleConnection();
+			_ = new PrimeService().HandleConnection(connection);
 		}
 	}
 }

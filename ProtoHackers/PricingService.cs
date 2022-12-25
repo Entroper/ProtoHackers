@@ -7,8 +7,7 @@ namespace ProtoHackers;
 
 public class PricingService : ITcpService
 {
-	private readonly Socket _socket;
-	private readonly SocketPipe _pipe;
+	private SocketPipe _pipe;
 
 	private readonly SortedList<int, int> _prices;
 
@@ -29,17 +28,16 @@ public class PricingService : ITcpService
 		public int Max { get; init; }
 	}
 
-	public PricingService(Socket socket)
+	public PricingService()
 	{
-		_socket = socket;
-		_pipe = new SocketPipe(_socket);
-
 		_prices = new SortedList<int, int>();
 	}
 
-	public async Task HandleConnection()
+	public async Task HandleConnection(Socket connection)
 	{
-		Console.WriteLine($"Connection accepted from {_socket.RemoteEndPoint}");
+		Console.WriteLine($"Connection accepted from {connection.RemoteEndPoint}");
+		_pipe = new SocketPipe(connection);
+
 		try
 		{
 			await Task.WhenAll(
