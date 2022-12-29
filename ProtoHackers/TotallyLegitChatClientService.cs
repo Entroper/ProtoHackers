@@ -42,23 +42,11 @@ public class TotallyLegitChatClientService : ITcpService
 			_incoming.PipeToSocket(),
 			_outgoing.SocketToPipe(),
 			_outgoing.PipeToSocket(),
-			ClientToServer(),
-			ServerToClient()
+			PassTotallyLegitMessages(_incoming.Input, _outgoing.Output),
+			PassTotallyLegitMessages(_outgoing.Input, _incoming.Output)
 		);
 
 		_server.Disconnect(_id);
-	}
-
-	private async Task ClientToServer()
-	{
-		await PassTotallyLegitMessages(_incoming.Input, _outgoing.Output);
-		await _outgoing.Output.CompleteAsync();
-	}
-
-	private async Task ServerToClient()
-	{
-		await PassTotallyLegitMessages(_outgoing.Input, _incoming.Output);
-		await _incoming.Output.CompleteAsync();
 	}
 
 	private async Task PassTotallyLegitMessages(PipeReader reader, PipeWriter writer)
@@ -74,5 +62,7 @@ public class TotallyLegitChatClientService : ITcpService
 			await writer.WriteAsync(NewLine);
 			await writer.FlushAsync();
 		}
+
+		await writer.CompleteAsync();
 	}
 }
