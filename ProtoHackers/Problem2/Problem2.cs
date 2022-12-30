@@ -1,6 +1,6 @@
-﻿namespace ProtoHackers;
+﻿namespace ProtoHackers.Problem2;
 
-public class Problem2
+public static class Problem2
 {
 	public static async Task PricingServer()
 	{

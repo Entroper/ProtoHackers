@@ -1,4 +1,4 @@
-﻿namespace ProtoHackers;
+﻿namespace ProtoHackers.Problem1;
 
 public static class Problem1
 {

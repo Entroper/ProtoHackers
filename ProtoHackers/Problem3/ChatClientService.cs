@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ProtoHackers;
+namespace ProtoHackers.Problem3;
 
 public class ChatClientService : ITcpService
 {
@@ -61,7 +61,7 @@ public class ChatClientService : ITcpService
 
 	public async Task ReceiveMessage(string message)
 	{
-		EncodingExtensions.Convert(Encoding.ASCII.GetEncoder(), message.AsSpan(), _pipe.Output, true, out _, out _);
+		Encoding.ASCII.GetEncoder().Convert(message.AsSpan(), _pipe.Output, true, out _, out _);
 		await _pipe.Output.WriteAsync(NewLine);
 		await _pipe.Output.FlushAsync();
 	}
@@ -83,7 +83,7 @@ public class ChatClientService : ITcpService
 			var position = result.Buffer.PositionOf((byte)'\n');
 			if (position.HasValue)
 			{
-				var line = EncodingExtensions.GetString(Encoding.ASCII, result.Buffer.Slice(result.Buffer.Start, position.Value));
+				var line = Encoding.ASCII.GetString(result.Buffer.Slice(result.Buffer.Start, position.Value));
 				_pipe.Input.AdvanceTo(result.Buffer.GetPosition(1, position.Value));
 
 				return line;
@@ -112,7 +112,7 @@ public class ChatClientService : ITcpService
 		var lineReader = new LineReader(_pipe.Input);
 		await foreach (var line in lineReader.ReadLines(_cts.Token))
 		{
-			var content = EncodingExtensions.GetString(Encoding.ASCII, line);
+			var content = Encoding.ASCII.GetString(line);
 			_server.BroadcastClientMessage(_username, content);
 		}
 

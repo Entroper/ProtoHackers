@@ -3,7 +3,7 @@ using System.Buffers.Binary;
 using System.IO.Pipelines;
 using System.Net.Sockets;
 
-namespace ProtoHackers;
+namespace ProtoHackers.Problem2;
 
 public class PricingService : ITcpService
 {

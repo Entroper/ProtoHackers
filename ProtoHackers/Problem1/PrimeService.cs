@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Text.Json;
 using System.Text;
 
-namespace ProtoHackers;
+namespace ProtoHackers.Problem1;
 
 public class PrimeService : ITcpService
 {

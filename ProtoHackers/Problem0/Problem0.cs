@@ -1,6 +1,6 @@
-﻿namespace ProtoHackers;
+﻿namespace ProtoHackers.Problem0;
 
-public static class Problem0
+public static class Problem
 {
 	public static async Task EchoServer()
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace ProtoHackers;
+namespace ProtoHackers.Problem5;
 
 public class TotallyLegitChatServer
 {

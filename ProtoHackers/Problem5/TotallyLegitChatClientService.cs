@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ProtoHackers;
+namespace ProtoHackers.Problem5;
 
 public class TotallyLegitChatClientService : ITcpService
 {
@@ -54,11 +54,11 @@ public class TotallyLegitChatClientService : ITcpService
 		var lineReader = new LineReader(reader);
 		await foreach (var line in lineReader.ReadLines(CancellationToken.None))
 		{
-			var message = EncodingExtensions.GetString(Encoding.ASCII, line);
+			var message = Encoding.ASCII.GetString(line);
 			Console.WriteLine(message);
 			var matches = BoguscoinAddressRegex.Match(message);
 			message = BoguscoinAddressRegex.Replace(message, TonyBoguscoinAddressReplacement);
-			EncodingExtensions.Convert(Encoding.ASCII.GetEncoder(), message.AsSpan(), writer, true, out _, out _);
+			Encoding.ASCII.GetEncoder().Convert(message.AsSpan(), writer, true, out _, out _);
 			await writer.WriteAsync(NewLine);
 			await writer.FlushAsync();
 		}

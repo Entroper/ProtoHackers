@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading.Channels;
 
-namespace ProtoHackers;
+namespace ProtoHackers.Problem3;
 
 public class ChatServer
 {
@@ -37,7 +37,7 @@ public class ChatServer
 		{
 			var others = _clients.Keys.ToList();
 			others.Remove(username);
-			var whoIsHereMessage = "* The room contains: " + String.Join(", ", others);
+			var whoIsHereMessage = "* The room contains: " + string.Join(", ", others);
 			await client.ReceiveMessage(whoIsHereMessage);
 
 			BroadcastServerMessage(username, $"* {username} has entered the room");

@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace ProtoHackers;
+namespace ProtoHackers.Problem0;
 
 public class EchoService : ITcpService
 {
